@@ -1,9 +1,23 @@
 import React from 'react';
+import { motion } from "framer-motion";
+import { useInView } from 'react-intersection-observer'; // Import the hook
 
 const About = () => {
+  // useInView hook to track visibility
+  const { ref, inView } = useInView({
+    triggerOnce: true,  // Only trigger animation once when entering the view
+    threshold: 0.1, // Trigger the animation when 10% of the element is in view
+  });
+
   return (
     <section id="about" className="bg-gray-100 py-16 px-6 md:px-12">
-      <div className="max-w-5xl mx-auto text-center">
+      <motion.div
+        ref={ref}  // Attach the ref to the element
+        initial={{ opacity: 0 }}
+        animate={{ opacity: inView ? 1 : 0 }} // Trigger opacity change when in view
+        transition={{ duration: 1 }}
+        className="max-w-5xl mx-auto text-center"
+      >
         <h2 className="text-3xl md:text-4xl font-semibold text-blue-600 mb-8">About Me</h2>
         <p className="text-lg md:text-xl text-gray-700 mb-8">
           Hi! I'm Essa Isa, a Full Stack Developer passionate about creating dynamic, scalable web applications. I specialize in using the MERN stack—MongoDB, Express.js, React, and Node.js—to build both the front-end and back-end of modern web solutions.
@@ -39,7 +53,7 @@ const About = () => {
             </ul>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

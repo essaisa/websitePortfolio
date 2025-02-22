@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion'; // Import framer-motion for animations
+import { useInView } from 'react-intersection-observer'; // Import the intersection observer hook
 
 const Contact = () => {
   // State to manage form fields and submission status
@@ -29,13 +31,33 @@ const Contact = () => {
     }, 2000);
   };
 
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
   return (
     <section id="contact" className="bg-gray-100 py-16 px-6 md:px-12">
       <div className="max-w-7xl mx-auto text-center">
-        <h2 className="text-3xl md:text-4xl font-semibold text-blue-600 mb-12">Contact Me</h2>
+        <motion.h2 
+          ref={ref}
+          initial={{ opacity: 0 }} 
+          animate={{ opacity: inView ? 1 : 0 }} 
+          transition={{ duration: 1 }}
+          className="text-3xl md:text-4xl font-semibold text-blue-600 mb-12"
+        >
+          Contact Me
+        </motion.h2>
 
         {/* Contact Form */}
-        <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <motion.form
+          ref={ref}
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: inView ? 1 : 0, y: inView ? 0 : 50 }}
+          transition={{ duration: 1 }}
+          onSubmit={handleSubmit} 
+          className="max-w-lg mx-auto bg-white p-8 rounded-lg shadow-lg"
+        >
           <div className="mb-4">
             <label htmlFor="name" className="block text-left text-gray-700 text-sm font-medium mb-2">Name</label>
             <input
@@ -88,7 +110,7 @@ const Contact = () => {
           {status && (
             <div className="mt-4 text-center text-gray-600">{status}</div>
           )}
-        </form>
+        </motion.form>
 
         {/* Alternative Contact Info */}
         <div className="mt-12 text-center">
@@ -96,7 +118,6 @@ const Contact = () => {
           <p className="text-blue-600 font-semibold">
             <a href="mailto:essaisa99@gmail.com">essaisa99@gmail.com</a>
           </p>
-          
         </div>
       </div>
     </section>
